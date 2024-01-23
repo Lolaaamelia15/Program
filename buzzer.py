@@ -23,4 +23,3 @@ GPIO.output(buzzer, GPIO.LOW)
 GPIO.cleanup()
 
 
-
