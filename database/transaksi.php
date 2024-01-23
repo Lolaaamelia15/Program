@@ -17,7 +17,11 @@ function api()
 
     if ($request_method === "GET") {
         http_response_code(200);
-        
+
+        $limit = 20; // Jumlah data per halaman
+        $page = isset($_GET["page"]) ? max(1, intval($_GET["page"])) : 1; 
+
+        $offset = ($page -1) * $limit;        
         $query = "SELECT * FROM transaksi";
 
         // if (isset($_GET["start-date"])) {
@@ -58,6 +62,9 @@ function api()
                 $query = "SELECT * FROM `transaksi` WHERE tanggal_transaksi BETWEEN CAST('$start' AS DATETIME) AND CAST('$end' AS DATETIME) AND nama_bibit = '$jenis'";
             }
         }
+
+        $query .= " LIMIT $limit OFFSET $offset";
+
         $data = query($query);
         return $data;
     }
@@ -72,7 +79,7 @@ function api()
 
         $status["message"] = "Berhasil Menambahkan Transaksi";
         return $status;
-        return $status;
+        // return $status;
     }
 }
 print(json_encode(api()));
